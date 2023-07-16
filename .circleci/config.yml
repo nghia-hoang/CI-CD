@@ -9,7 +9,7 @@ commands:
         required: true
     steps:
       - run:
-          name: "Destroy-environments"
+          alias: "Destroy environments"
           when: on_fail
           command: |
              # Use the AWS CLI to delete the CloudFormation stacks
