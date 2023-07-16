@@ -4,12 +4,12 @@ commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     parameters:
-    #   CIRCLE_WORKFLOW_ID:
-    #     type: string
-    #     required: true
+      CIRCLE_WORKFLOW_ID:
+        type: string
+        required: true
     steps:
       - run:
-          alias: "Destroy environments"
+          name: Destroy-environments
           when: on_fail
           command: |
              # Use the AWS CLI to delete the CloudFormation stacks
