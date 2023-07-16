@@ -1,18 +1,20 @@
 version: 2.1
 
- 
-
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     parameters:
-      # Add parameter here   
+      CIRCLE_WORKFLOW_ID:
+        type: string
+        required: true   
     steps:
       - run:
           name: Destroy environments
           when: on_fail
           command: |
-            # Your code here
+             # Use the AWS CLI to delete the CloudFormation stacks
+            aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID}"
+            aws cloudformation delete-stack --stack-name "udapeople-front-end-${CIRCLE_WORKFLOW_ID}"
             exit 1
 
  
@@ -20,20 +22,29 @@ commands:
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:
-      # Add parameter here     
+      parameters:
+      CIRCLE_WORKFLOW_ID:
+        type: string
+        required: true
+      success_url:
+        type: string
+        required: true     
     steps:
       - run:
           name: Revert migrations
-          # Add when this will run
+          when: on_fail
           command: |
-            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS = 1
-            if(( $SUCCESS==1 )); 
-            then
-            #  cd ~/project/backend
-            #  npm install
-            #  Add revert code here. You can find this in the Getting Started section.
+            # Check if there was a successful migration
+            curl -s $success_url | grep -q success
+            if [[ $? == 0 ]]; then
+              # Revert the migration
+              cd ~/project/backend
+              npm install
+              # Add revert code here. You can find this in the Getting Started section.
               exit 1
+            else
+              # No need to revert the migration
+              exit 0
             fi
 
 jobs:
