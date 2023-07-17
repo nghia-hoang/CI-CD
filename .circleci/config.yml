@@ -141,86 +141,86 @@ jobs:
              npm run test
              exit 1
 
-  deploy-infrastructure:
-    docker:
-      #- image: circleci/node:13.8.0 that supports AWS CLI
-    steps:
-      - checkout
-      - run:
-          name: "Ensure-back-end-infrastructure-exists"
-          command: |
-            aws cloudformation deploy \
-              #--template-file .circleci/files/backend.yml \
-              #--tags project=udapeople \
-              #--stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"  \
-              #--parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
-              exit 1
-      - run:
-          name: "Ensure-front-end-infrastructure-exist"
-          command: |
-            aws cloudformation deploy \
-              #--template-file .circleci/files/frontend.yml \
-              #--tags project=udapeople \
-              #--stack-name "udapeople-front-end-${CIRCLE_WORKFLOW_ID:0:8}"" \
-              #--parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:8}"  
-              exit 1
-      - run:
-          name: "Add-back-end-ip-to-ansible-inventory"
-          command: |
-            # Fetch the public IP of the EC2 instance
-            EC2_PUBLIC_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=your-instance-name" --query "Reservations[].Instances[].PublicIpAddress" --output text)
+  # deploy-infrastructure:
+  #   docker:
+  #     #- image: circleci/node:13.8.0 that supports AWS CLI
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: "Ensure-back-end-infrastructure-exists"
+  #         command: |
+  #           aws cloudformation deploy \
+  #             #--template-file .circleci/files/backend.yml \
+  #             #--tags project=udapeople \
+  #             #--stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"  \
+  #             #--parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
+  #             exit 1
+  #     - run:
+  #         name: "Ensure-front-end-infrastructure-exist"
+  #         command: |
+  #           aws cloudformation deploy \
+  #             #--template-file .circleci/files/frontend.yml \
+  #             #--tags project=udapeople \
+  #             #--stack-name "udapeople-front-end-${CIRCLE_WORKFLOW_ID:0:8}"" \
+  #             #--parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:8}"  
+  #             exit 1
+  #     - run:
+  #         name: "Add-back-end-ip-to-ansible-inventory"
+  #         command: |
+  #           # Fetch the public IP of the EC2 instance
+  #           EC2_PUBLIC_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=your-instance-name" --query "Reservations[].Instances[].PublicIpAddress" --output text)
 
-            # Append the IP to the inventory.txt file
-            echo "your-instance-name ansible_host=$EC2_PUBLIC_IP ansible_user=ubuntu" >> .circleci/ansible/inventory.txt
+  #           # Append the IP to the inventory.txt file
+  #           echo "your-instance-name ansible_host=$EC2_PUBLIC_IP ansible_user=ubuntu" >> .circleci/ansible/inventory.txt
 
-            # Persist the modified inventory file to the workspace
-            cp .circleci/ansible/inventory.txt $HOME/workspace/inventory.txt
-            exit 1
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/.circleci/ansible/inventory.txt
-      # Here's where you will add some code to rollback on failure      
+  #           # Persist the modified inventory file to the workspace
+  #           cp .circleci/ansible/inventory.txt $HOME/workspace/inventory.txt
+  #           exit 1
+  #     - persist_to_workspace:
+  #         root: ~/
+  #         paths:
+  #           - project/.circleci/ansible/inventory.txt
+  #     # Here's where you will add some code to rollback on failure      
 
-  configure-infrastructure:
-    docker:
-     # - image: circleci/node:13.8.0 that supports Ansible
-    steps:
-      - checkout
-      # Add ssh keys with fingerprint
-      # attach workspace
-      - run:
-          name: "Install-dependencies"
-          command: |
-            # Your code here
-            exit 1
-      - run:
-          name: "Configure-server"
-          command: |
-            # Your code here
-            exit 1
-      # Here's where you will add some code to rollback on failure      
+  # configure-infrastructure:
+  #   docker:
+  #    # - image: circleci/node:13.8.0 that supports Ansible
+  #   steps:
+  #     - checkout
+  #     # Add ssh keys with fingerprint
+  #     # attach workspace
+  #     - run:
+  #         name: "Install-dependencies"
+  #         command: |
+  #           # Your code here
+  #           exit 1
+  #     - run:
+  #         name: "Configure-server"
+  #         command: |
+  #           # Your code here
+  #           exit 1
+  #     # Here's where you will add some code to rollback on failure      
 
-  run-migrations:
-    docker:
-     # - image: circleci/node:13.8.0 that supports NodeJS
-    steps:
-      - checkout
-      - run:
-          name: "Run-migrations"
-          command: |
-            # Your code here
-            exit 1
-      - run:
-          name: "Send-migration-results-to-memstash"
-          command: |
-            # Your code here
-            exit 1
-     # Here's where you will add some code to rollback on failure      
+  # run-migrations:
+  #   docker:
+  #    # - image: circleci/node:13.8.0 that supports NodeJS
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: "Run-migrations"
+  #         command: |
+  #           # Your code here
+  #           exit 1
+  #     - run:
+  #         name: "Send-migration-results-to-memstash"
+  #         command: |
+  #           # Your code here
+  #           exit 1
+  #    # Here's where you will add some code to rollback on failure      
 
   deploy-frontend:
     docker:
-    #  - image: circleci/node:13.8.0 that supports AWS CLI
+     - image: circleci/node:13.8.0 that supports AWS CLI
     steps:
       - checkout
       - run:
@@ -241,7 +241,7 @@ jobs:
 
   deploy-backend:
     docker:
-    #  - image: circleci/node:13.8.0 that supports Ansible
+     - image: circleci/node:13.8.0 that supports Ansible
     steps:
       - checkout
       # Add ssh keys with fingerprint
@@ -256,43 +256,43 @@ jobs:
             # your code here
       # Here's where you will add some code to rollback on failure  
 
-  smoke-test:
-    docker:
-      # Lightweight Docker image 
-    steps:
-      - checkout
-      - run:
-          name: "Install-dependencies"
-          command: |
-            # your code here
-      - run:
-          name: "Get-backend-url"
-          command: |
-            # your code here
-      - run:
-          name: "Backend-smoke-test."
-          command: |
-            # your code here
-      - run:
-          name: "Frontend-smoke-test."
-          command: |
-            # your code here
-      # Here's where you will add some code to rollback on failure  
+  # smoke-test:
+  #   docker:
+  #     # Lightweight Docker image 
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: "Install-dependencies"
+  #         command: |
+  #           # your code here
+  #     - run:
+  #         name: "Get-backend-url"
+  #         command: |
+  #           # your code here
+  #     - run:
+  #         name: "Backend-smoke-test."
+  #         command: |
+  #           # your code here
+  #     - run:
+  #         name: "Frontend-smoke-test."
+  #         command: |
+  #           # your code here
+  #     # Here's where you will add some code to rollback on failure  
  
-  cloudfront-update:
-    docker:
-    #  - image: circleci/node:13.8.0 that supports AWS CLI
-    steps:
-      - checkout
-      - run:
-          name: "Install-dependencies"
-          command: |
-            # your code here
-      - run:
-          name: "Update-cloudfront-distribution"
-          command: |
-            # your code here
-      # Here's where you will add some code to rollback on failure  
+  # cloudfront-update:
+  #   docker:
+  #   #  - image: circleci/node:13.8.0 that supports AWS CLI
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: "Install-dependencies"
+  #         command: |
+  #           # your code here
+  #     - run:
+  #         name: "Update-cloudfront-distribution"
+  #         command: |
+  #           # your code here
+  #     # Here's where you will add some code to rollback on failure  
 
 cleanup:
     docker:
