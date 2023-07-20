@@ -56,7 +56,7 @@ jobs:
           name: "Build-front-end"
           command: |
              cd $(eval echo "$CIRCLE_WORKING_DIRECTORY/$PROJECT_ROOT_DIR/frontend")
-             nvm install node-lts/fermium
+             npm audit fix
              npm install
              npm run build
              exit 1
@@ -75,7 +75,7 @@ jobs:
           name: "Back-end-build"
           command: |
              cd $(eval echo "$CIRCLE_WORKING_DIRECTORY/$PROJECT_ROOT_DIR/backend")
-             nvm install node-lts/fermium
+             npm audit fix
              npm install
              npm run build
              exit 1
