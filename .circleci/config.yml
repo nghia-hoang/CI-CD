@@ -82,7 +82,7 @@ jobs:
              npm --version
             #  npm i
             #  npm audit fix --force
-            #  npm run build
+             npm run build
              exit 1
       - save_cache:
           paths: [backend/node_modules]
