@@ -80,8 +80,8 @@ jobs:
           command: |
              cd backend
              npm --version
-            #  npm i
-            #  npm audit fix --force
+             npm i
+             npm audit fix --force
              npm run build
              exit 1
       - save_cache:
