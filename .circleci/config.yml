@@ -55,9 +55,9 @@ jobs:
       - run:
           name: "Build-front-end"
           command: |
-             cd $(eval echo "$CIRCLE_WORKING_DIRECTORY/$PROJECT_ROOT_DIR/frontend")
-             npm audit fix
+             cd frontend
              npm install
+             npm audit
              npm run build
              exit 1
       - save_cache:
@@ -74,9 +74,9 @@ jobs:
       - run:
           name: "Back-end-build"
           command: |
-             cd $(eval echo "$CIRCLE_WORKING_DIRECTORY/$PROJECT_ROOT_DIR/backend")
-             npm audit fix
+             cd backend
              npm install
+             npm audit
              npm run build
              exit 1
       - save_cache:
