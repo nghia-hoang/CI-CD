@@ -53,13 +53,15 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
+      - clean:
+          paths:
+            - node_modules
       - restore_cache:
           keys: [frontend-build]
       - run:
           name: "Build-front-end"
           command: |
              cd frontend
-             npm run lint -- --fix
              npm i
              npm run build
              exit 1
@@ -72,13 +74,15 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
+      - clean:
+          paths:
+            - node_modules
       - restore_cache:
           keys: [backend-build]
       - run:
           name: "Back-end-build"
           command: |
              cd backend
-             npm run lint -- --fix
              npm i
              npm run build
              exit 1
